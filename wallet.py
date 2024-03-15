@@ -7,12 +7,9 @@ import json
 class Wallet:
     def __init__(self, file="wallet.json"):
         if not self.load_wallet(file):
-
             self.create_new_wallet(file)
 
-            print("New wallet created.")
-            print("You MUST back up your wallet in case it is lost. Copy " +
-                          file + " to a safe location.")
+            print("New wallet.json created.")
         else:
             print("Loaded wallet")
 
@@ -29,7 +26,7 @@ class Wallet:
         return True
 
     def create_new_wallet(self, wallet_file):
-        open(wallet_file,"a").close()
+        open(wallet_file, "a").close()
         keys = self.generate_keys()
         try:
             with open(wallet_file, "w") as f:
