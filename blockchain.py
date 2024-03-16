@@ -7,6 +7,7 @@ class Blockchain:
 
   def __init__(self):
     self.chain = []
+    self.block_reward = 50
 
   def __str__(self):
     string = f"Blockchain ({len(self.chain)} blocks):\n"

@@ -1,6 +1,7 @@
 from time import time
 from hashlib import sha256
 from random import getrandbits
+from transaction import Transaction
 
 
 class Block:
@@ -25,6 +26,10 @@ class Block:
 
     encoded_block_string = block_string.encode()
     return sha256(encoded_block_string).hexdigest()
+  
+  def add_coinbase_transaction(self, miner, reward):
+    if len(self.transactions) == 0:
+      self.transactions.append(Transaction.coinbase(miner, reward))
 
   def mine(self):
     while self.hash > self.target:
@@ -33,8 +38,14 @@ class Block:
     print(f"Mined block #{self.height}")
   
   def verify_transactions(self):
-    for transaction in self.transactions:
-      if not transaction.verify():
+    if len(self.transactions) == 0:
+      return False
+
+    if self.transactions[0].type != 'coinbase':
+      return False
+
+    for transaction in self.transactions[1:]:
+      if transaction.type == 'coinbase' or not transaction.verify():
         return False
-      
+
     return True
