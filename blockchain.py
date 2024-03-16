@@ -91,6 +91,17 @@ class Blockchain:
         return False
     
     return True
+  
+  def transaction_history(self, wallet_address):
+    transactions = []
+  
+    for block in self.chain:
+      for transaction in block.transactions:
+        if wallet_address in (transaction.sender, transaction.recipient):
+          transactions.append(transaction)
+    
+    return transactions
+
 
   def generate_next_block(self):
     return Block(

@@ -29,5 +29,5 @@ blockchain.add_block(block)
 
 print(blockchain.get_balance(wallet.public_key))
 
-
-print(blockchain)
+for tx in blockchain.transaction_history(wallet.public_key):
+  print(tx) 
