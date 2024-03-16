@@ -34,6 +34,7 @@ class Block:
   def mine(self):
     while self.hash > self.target:
       self.nonce = format(getrandbits(64), "x")
+      self.timestamp = time()
 
     print(f"Mined block #{self.height}")
   
