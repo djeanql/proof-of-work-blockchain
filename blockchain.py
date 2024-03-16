@@ -39,7 +39,10 @@ class Blockchain:
     if block.timestamp > time():
       return False
     
-    if not block.verify_transactions():
+    if not block.verify_transaction_signatures():
+      return False
+    
+    if not self.check_for_overspending(block):
       return False
 
     if block.height != 0:
@@ -64,9 +67,30 @@ class Blockchain:
           balance -= transaction.amount
         if transaction.recipient == wallet_address:
           balance += transaction.amount
-          print(transaction)
     
     return balance
+  
+  def check_for_overspending(self, block):
+    """Checks that no address overspends in a given block"""
+    
+    balances = {}
+  
+    for transaction in block.transactions:
+
+      # get current balances
+      if transaction.sender not in balances.keys():
+        balances[transaction.sender] = self.get_balance(transaction.sender)
+      if transaction.recipient not in balances.keys():
+        balances[transaction.recipient] = self.get_balance(transaction.recipient)
+      
+      # edit balances every transaction
+      balances[transaction.sender] -= transaction.amount
+      balances[transaction.recipient] += transaction.amount
+
+      if transaction.type != 'coinbase' and balances[transaction.sender] < 0:
+        return False
+    
+    return True
 
   def generate_next_block(self):
     return Block(

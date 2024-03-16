@@ -37,7 +37,7 @@ class Block:
 
     print(f"Mined block #{self.height}")
   
-  def verify_transactions(self):
+  def verify_transaction_signatures(self):
     if len(self.transactions) == 0:
       return False
 
