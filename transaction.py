@@ -19,6 +19,9 @@ class Transaction:
         if priv_key:
             self.sign(priv_key)
     
+    def __str__(self):
+        return f"{self.sender} ---{self.amount} coins---> {self.recipient}"
+    
     @classmethod
     def coinbase(cls, miner_public_key, reward):
         """Returns a coinbase (miner reward) transaction"""

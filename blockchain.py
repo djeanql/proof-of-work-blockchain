@@ -54,6 +54,19 @@ class Blockchain:
         return False
 
     return True
+  
+  def get_balance(self, wallet_address):
+    balance = 0
+  
+    for block in self.chain:
+      for transaction in block.transactions:
+        if transaction.sender == wallet_address:
+          balance -= transaction.amount
+        if transaction.recipient == wallet_address:
+          balance += transaction.amount
+          print(transaction)
+    
+    return balance
 
   def generate_next_block(self):
     return Block(
