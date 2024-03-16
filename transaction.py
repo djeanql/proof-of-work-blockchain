@@ -30,7 +30,7 @@ class Transaction:
 
     def sign(self, private_key):
         signing_key = SigningKey(private_key, encoder=HexEncoder)
-        self.signature = signing_key.sign(self.bytes).signature
+        self.signature = HexEncoder.encode(signing_key.sign(self.bytes).signature)
 
     def verify(self):
         signature = HexEncoder.decode(self.signature)

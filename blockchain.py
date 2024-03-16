@@ -37,6 +37,9 @@ class Blockchain:
 
     if block.timestamp > time():
       return False
+    
+    if not block.verify_transactions():
+      return False
 
     if block.height != 0:
 

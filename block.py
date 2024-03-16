@@ -31,3 +31,10 @@ class Block:
       self.nonce = format(getrandbits(64), "x")
 
     print(f"Mined block #{self.height}")
+  
+  def verify_transactions(self):
+    for transaction in self.transactions:
+      if not transaction.verify():
+        return False
+      
+    return True
