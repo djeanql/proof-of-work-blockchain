@@ -45,6 +45,9 @@ class Blockchain:
     if not self.check_for_overspending(block):
       return False
 
+    if not block.verify_block_reward(self.block_reward):
+      return False
+
     if block.height != 0:
 
       if block.timestamp < self.previous_block.timestamp:

@@ -50,3 +50,12 @@ class Block:
         return False
 
     return True
+  
+  def verify_block_reward(self, block_reward):
+    if not self.transactions or self.transactions[0].sender != 'coinbase':
+      return False
+    
+    if self.transactions[0].amount != block_reward:
+      return False
+
+    return True    
