@@ -5,7 +5,7 @@ import json
 
 
 class Wallet:
-    def __init__(self, file="wallet.json"):
+    def __init__(self, file: str ="wallet.json"):
         keys = self.load_wallet(file)
         if not keys:
             keys = self.create_new_wallet(file)
@@ -17,7 +17,7 @@ class Wallet:
         self.public_key, self.private_key = keys
 
     @staticmethod
-    def load_wallet(wallet_file):
+    def load_wallet(wallet_file: str) -> (str, str):
         try:
             with open(wallet_file, "r") as f:
                 keys = json.load(f)
@@ -26,7 +26,7 @@ class Wallet:
 
         return keys["public_key"], keys["private_key"]
 
-    def create_new_wallet(self, wallet_file):
+    def create_new_wallet(self, wallet_file: str) -> (str, str):
         open(wallet_file, "a").close()
         keys = self.generate_keys()
         try:
@@ -38,7 +38,7 @@ class Wallet:
         return keys["public_key"], keys["private_key"]
 
     @staticmethod
-    def generate_keys():
+    def generate_keys() -> dict:
         """create public and private RSA keys"""
 
         private_key = SigningKey.generate()

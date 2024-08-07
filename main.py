@@ -14,6 +14,9 @@ block.transactions.append(Transaction(wallet.public_key, wallet.private_key, "pe
 block.mine()
 blockchain.add_block(block)
 
+wallet = Wallet()
+
+
 block = blockchain.generate_next_block()
 block.add_coinbase_transaction(wallet.public_key, blockchain.block_reward)
 
@@ -25,6 +28,14 @@ block.transactions.append(Transaction(wallet.public_key, wallet.private_key, "pe
 
 
 block.mine()
+blockchain.add_block(block)
+# block not added - overpending
+
+block = blockchain.generate_next_block()
+block.add_coinbase_transaction(wallet.public_key, blockchain.block_reward + 1)
+
+block.mine()
+
 blockchain.add_block(block)
 
 print(blockchain.get_balance(wallet.public_key))

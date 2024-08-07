@@ -1,4 +1,5 @@
 from block import Block
+from transaction import Transaction
 
 from time import time
 
@@ -7,7 +8,7 @@ class Blockchain:
 
   def __init__(self):
     self.chain = []
-    self.block_reward = 50
+    self.block_reward = 50.0
 
   def __str__(self):
     string = f"Blockchain ({len(self.chain)} blocks):\n"
@@ -16,14 +17,14 @@ class Blockchain:
     return string
 
   @property
-  def height(self):
+  def height(self) -> int:
     return max(len(self.chain) - 1, 0)
 
   @property
-  def previous_block(self):
+  def previous_block(self) -> bool:
     return self.chain[-1] if len(self.chain) > 0 else None
 
-  def add_block(self, block):
+  def add_block(self, block: Block) -> bool:
     if self.validate_next_block(block):
       self.chain.append(block)
       return True
@@ -31,7 +32,7 @@ class Blockchain:
       print("Block invalid")
       return False
 
-  def validate_next_block(self, block):
+  def validate_next_block(self, block: Block) -> bool:
 
     if block.hash > block.target:
       return False
@@ -61,8 +62,8 @@ class Blockchain:
 
     return True
   
-  def get_balance(self, wallet_address):
-    balance = 0
+  def get_balance(self, wallet_address: str) -> float:
+    balance = 0.0
   
     for block in self.chain:
       for transaction in block.transactions:
@@ -73,7 +74,7 @@ class Blockchain:
     
     return balance
   
-  def check_for_overspending(self, block):
+  def check_for_overspending(self, block: Block) -> bool:
     """Checks that no address overspends in a given block"""
     
     balances = {}
@@ -95,7 +96,7 @@ class Blockchain:
     
     return True
   
-  def transaction_history(self, wallet_address):
+  def transaction_history(self, wallet_address: str) -> [Transaction]:
     transactions = []
   
     for block in self.chain:

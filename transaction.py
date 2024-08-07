@@ -8,7 +8,9 @@ from nacl.signing import SigningKey, VerifyKey
 # TODO: Separate coinbase transaction class
 
 class Transaction:
-    def __init__(self, pub_key, priv_key, recipient, amount, transaction_type="payment"):
+    def __init__(self, pub_key: str, priv_key: str, recipient: str, amount: float,
+        transaction_type: str ="payment"):
+
         self.type = transaction_type
         self.sender = pub_key
         self.recipient = recipient
@@ -35,27 +37,27 @@ class Transaction:
         )
 
     @property
-    def as_string(self):
+    def as_string(self) -> str:
         return f"{self.sender}{self.recipient}{self.amount}{self.type}{self.timestamp}"
 
     @property
-    def bytes(self):
+    def bytes(self) -> bytes:
         return self.as_string.encode()
 
     @property
-    def txid(self):
+    def txid(self) -> str:
         return sha256(self.bytes).hexdigest()
 
-    def sign(self, private_key):
+    def sign(self, private_key: str):
         if self.type == "coinbase":
             return
 
         signing_key = SigningKey(private_key, encoder=HexEncoder)
         self.signature = HexEncoder.encode(signing_key.sign(self.bytes).signature)
 
-    def verify(self):
+    def verify(self) -> bool:
         if self.type == "coinbase":
-            return
+            return True
 
         signature = HexEncoder.decode(self.signature)
         verify_key = VerifyKey(self.sender, encoder=HexEncoder)

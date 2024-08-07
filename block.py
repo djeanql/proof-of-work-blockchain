@@ -18,7 +18,7 @@ class Block:
     return f"Block #{self.height}, hash: {self.hash[:10]}.., prev_hash: {self.prev_hash[:10]}.., nonce: {self.nonce[:10]}.., timestamp: {self.timestamp}, target: {self.target[:10]}.., transactions: {len(self.transactions)}"
 
   @property
-  def hash(self):
+  def hash(self) -> str:
     block_string = f"{self.prev_hash}{self.nonce}{self.timestamp}{self.height}"
 
     for transaction in self.transactions:
@@ -27,7 +27,7 @@ class Block:
     encoded_block_string = block_string.encode()
     return sha256(encoded_block_string).hexdigest()
   
-  def add_coinbase_transaction(self, miner, reward):
+  def add_coinbase_transaction(self, miner: str, reward: float):
     if len(self.transactions) == 0:
       self.transactions.append(Transaction.coinbase(miner, reward))
 
@@ -38,7 +38,7 @@ class Block:
 
     print(f"Mined block #{self.height}")
   
-  def verify_transaction_signatures(self):
+  def verify_transaction_signatures(self) -> bool:
     if len(self.transactions) == 0:
       return False
 
@@ -51,7 +51,7 @@ class Block:
 
     return True
   
-  def verify_block_reward(self, block_reward):
+  def verify_block_reward(self, block_reward: float) -> bool:
     if not self.transactions or self.transactions[0].sender != 'coinbase':
       return False
     
